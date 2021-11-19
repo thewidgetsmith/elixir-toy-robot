@@ -102,4 +102,48 @@ defmodule ToyRobot.CommandRunnerTest do
     assert robot.lcn_y == 2
     assert robot.yaw == :north
   end
+
+  test "robot cannot move beyond the north boundary" do
+    %Simulation{robot: robot} = [
+      {:place, %{lcn_x: 0, lcn_y: 4, yaw: :north}},
+      :move
+    ] |> CommandRunner.run
+
+    assert robot.lcn_x == 0
+    assert robot.lcn_y == 4
+    assert robot.yaw == :north
+  end
+
+  test "robot cannot move beyond the south boundary" do
+    %Simulation{robot: robot} = [
+      {:place, %{lcn_x: 0, lcn_y: 0, yaw: :south}},
+      :move
+    ] |> CommandRunner.run
+
+    assert robot.lcn_x == 0
+    assert robot.lcn_y == 0
+    assert robot.yaw == :south
+  end
+
+  test "robot cannot move beyond the east boundary" do
+    %Simulation{robot: robot} = [
+      {:place, %{lcn_x: 4, lcn_y: 0, yaw: :east}},
+      :move
+    ] |> CommandRunner.run
+
+    assert robot.lcn_x == 4
+    assert robot.lcn_y == 0
+    assert robot.yaw == :east
+  end
+
+  test "robot cannot move beyond the west boundary" do
+    %Simulation{robot: robot} = [
+      {:place, %{lcn_x: 0, lcn_y: 0, yaw: :west}},
+      :move
+    ] |> CommandRunner.run
+
+    assert robot.lcn_x == 0
+    assert robot.lcn_y == 0
+    assert robot.yaw == :west
+  end
 end
