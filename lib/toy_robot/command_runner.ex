@@ -24,6 +24,11 @@ defmodule ToyRobot.CommandRunner do
     run(rest, simulation)
   end
 
+  def run([:turn_around | rest], simulation) do
+    {:ok, simulation} = simulation |> Simulation.turn_around
+    run(rest, simulation)
+  end
+
   def run([:report | rest], simulation) do
     %{lcn_x: x, lcn_y: y, yaw: z} = Simulation.report(simulation)
     z = z |> Atom.to_string |> String.upcase

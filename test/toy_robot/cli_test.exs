@@ -17,6 +17,20 @@ defmodule ToyRobot.CLITest do
     assert output |> String.trim == expected_output |> String.trim
   end
 
+  test "handles new V2 commands and reports correctly" do
+    commands_path = Path.expand("test/fixtures/commands_v2.txt", File.cwd!)
+
+    output = capture_io fn ->
+      ToyRobot.CLI.main([commands_path])
+    end
+
+    expected_output = """
+    The robot is at (0,2) facing SOUTH
+    """
+
+    assert output |> String.trim == expected_output |> String.trim
+  end
+
   test "provides usage instructions when no arguments are given" do
     output = capture_io fn ->
       ToyRobot.CLI.main([])

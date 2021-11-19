@@ -136,6 +136,28 @@ defmodule ToyRobot.Simulation do
   end
 
   @doc """
+  Turns the robot around to face the opposite direction.
+
+  ## Examples
+    iex> alias ToyRobot.{Robot, Table, Simulation}
+    [ToyRobot.Robot, ToyRobot.Table, ToyRobot.Simulation]
+    iex> table = %Table{x_boundary: 4, y_boundary: 4}
+    %Table{x_boundary: 4, y_boundary: 4}
+    iex> simulation = %Simulation{
+    ...>   table: table,
+    ...>   robot: %Robot{lcn_x: 0, lcn_y: 0, yaw: :north}
+    ...> }
+    iex> simulation |> Simulation.turn_around
+    {:ok, %Simulation{
+      table: table,
+      robot: %Robot{lcn_x: 0, lcn_y: 0, yaw: :south}
+    }}
+  """
+  def turn_around(%Simulation{robot: robot} = simulation) do
+    {:ok, %{simulation | robot: robot |> Robot.turn_around}}
+  end
+
+  @doc """
   Returns the robot's current position and orientation on the table.
 
   ## Examples

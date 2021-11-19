@@ -79,6 +79,17 @@ defmodule ToyRobot.CommandRunnerTest do
     assert robot.yaw == :east
   end
 
+  test "handles a place + turn_around command" do
+    %Simulation{robot: robot} = [
+      {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
+      :turn_around
+    ] |> CommandRunner.run
+
+    assert robot.lcn_x == 1
+    assert robot.lcn_y == 2
+    assert robot.yaw == :south
+  end
+
   test "handles a place + report command" do
     commands = [
       {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},

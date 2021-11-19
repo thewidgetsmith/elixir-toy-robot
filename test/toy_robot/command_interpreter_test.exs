@@ -5,7 +5,7 @@ defmodule ToyRobot.CommandInterpreterTest do
   alias ToyRobot.CommandInterpreter
 
   test "handles all possible commands" do
-    commands = ["PLACE 1,2,NORTH", "MOVE", "LEFT", "RIGHT", "REPORT"]
+    commands = ["PLACE 1,2,NORTH", "MOVE", "LEFT", "RIGHT", "UTURN", "REPORT"]
     commands |> CommandInterpreter.interpret
   end
 

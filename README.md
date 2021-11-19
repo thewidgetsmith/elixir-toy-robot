@@ -25,6 +25,14 @@ REPORT
 - The file is assumed to have ASCII encoding. It is assumed that the `PLACE` command has only one space, that is `PLACE 1, 2, NORTH` is an invalid command.
 - All commands must be in uppercase, all lower and mixed case commands will be ignored.
 
+## Changelog
+
+### Commands V2 - Add `UTURN` Command
+
+To avoid repeated `LEFT` or `RIGHT` commands, the commands.txt must now be able to handle the `UTURN` command which turns the toy robot around to face the opposite direction. For example, when the robot is facing north a `UTURN` command will turn the robot to face south.
+
+
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
