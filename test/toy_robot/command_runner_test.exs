@@ -6,12 +6,13 @@ defmodule ToyRobot.CommandRunnerTest do
   alias ToyRobot.{CommandRunner, Simulation}
 
   test "handles a valid place command" do
-    %Simulation{robot: robot} = CommandRunner.run([
-      {
-        :place,
-        %{lcn_x: 1, lcn_y: 2, yaw: :north}
-      }
-    ])
+    %Simulation{robot: robot} =
+      CommandRunner.run([
+        {
+          :place,
+          %{lcn_x: 1, lcn_y: 2, yaw: :north}
+        }
+      ])
 
     assert robot.lcn_x == 1
     assert robot.lcn_y == 2
@@ -25,10 +26,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "ignores commands until a valid placement" do
-    %Simulation{robot: robot} = [
-      :move,
-      {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        :move,
+        {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}}
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 1
     assert robot.lcn_y == 2
@@ -36,10 +39,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "handles a place + move command" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
-      :move
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
+        :move
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 1
     assert robot.lcn_y == 3
@@ -47,10 +52,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "handles a place + invalid move command" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 1, lcn_y: 4, yaw: :north}},
-      :move
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 1, lcn_y: 4, yaw: :north}},
+        :move
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 1
     assert robot.lcn_y == 4
@@ -58,10 +65,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "handles a place + turn_left command" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
-      :turn_left
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
+        :turn_left
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 1
     assert robot.lcn_y == 2
@@ -69,10 +78,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "handles a place + turn_right command" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
-      :turn_right
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
+        :turn_right
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 1
     assert robot.lcn_y == 2
@@ -80,10 +91,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "handles a place + turn_around command" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
-      :turn_around
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
+        :turn_around
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 1
     assert robot.lcn_y == 2
@@ -96,18 +109,21 @@ defmodule ToyRobot.CommandRunnerTest do
       :report
     ]
 
-    output = capture_io fn ->
-      CommandRunner.run(commands)
-    end
+    output =
+      capture_io(fn ->
+        CommandRunner.run(commands)
+      end)
 
-    assert output |> String.trim == "The robot is at (1,2) facing NORTH"
+    assert output |> String.trim() == "The robot is at (1,2) facing NORTH"
   end
 
   test "handles a place + invalid command" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
-      {:invalid, "EXTERMINATE"}
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 1, lcn_y: 2, yaw: :north}},
+        {:invalid, "EXTERMINATE"}
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 1
     assert robot.lcn_y == 2
@@ -115,10 +131,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "robot cannot move beyond the north boundary" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 0, lcn_y: 4, yaw: :north}},
-      :move
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 0, lcn_y: 4, yaw: :north}},
+        :move
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 0
     assert robot.lcn_y == 4
@@ -126,10 +144,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "robot cannot move beyond the south boundary" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 0, lcn_y: 0, yaw: :south}},
-      :move
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 0, lcn_y: 0, yaw: :south}},
+        :move
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 0
     assert robot.lcn_y == 0
@@ -137,10 +157,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "robot cannot move beyond the east boundary" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 4, lcn_y: 0, yaw: :east}},
-      :move
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 4, lcn_y: 0, yaw: :east}},
+        :move
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 4
     assert robot.lcn_y == 0
@@ -148,10 +170,12 @@ defmodule ToyRobot.CommandRunnerTest do
   end
 
   test "robot cannot move beyond the west boundary" do
-    %Simulation{robot: robot} = [
-      {:place, %{lcn_x: 0, lcn_y: 0, yaw: :west}},
-      :move
-    ] |> CommandRunner.run
+    %Simulation{robot: robot} =
+      [
+        {:place, %{lcn_x: 0, lcn_y: 0, yaw: :west}},
+        :move
+      ]
+      |> CommandRunner.run()
 
     assert robot.lcn_x == 0
     assert robot.lcn_y == 0

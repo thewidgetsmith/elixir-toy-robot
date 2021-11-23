@@ -1,7 +1,7 @@
 defmodule ToyRobot.Robot do
   alias ToyRobot.Robot
 
-  defstruct [lcn_y: 0, lcn_x: 0, yaw: :north]
+  defstruct lcn_y: 0, lcn_x: 0, yaw: :north
 
   @doc """
   Moves the robot forward one space in the direction it is pointing.
@@ -35,12 +35,13 @@ defmodule ToyRobot.Robot do
     %Robot{yaw: :west}
   """
   def turn_left(%Robot{yaw: yaw} = robot) do
-    new_yaw = case yaw do
-      :north -> :west
-      :south -> :east
-      :east -> :north
-      :west -> :south
-    end
+    new_yaw =
+      case yaw do
+        :north -> :west
+        :south -> :east
+        :east -> :north
+        :west -> :south
+      end
 
     %Robot{robot | yaw: new_yaw}
   end
@@ -57,12 +58,13 @@ defmodule ToyRobot.Robot do
     %Robot{yaw: :east}
   """
   def turn_right(%Robot{yaw: yaw} = robot) do
-    new_yaw = case yaw do
-      :north -> :east
-      :south -> :west
-      :east -> :south
-      :west -> :north
-    end
+    new_yaw =
+      case yaw do
+        :north -> :east
+        :south -> :west
+        :east -> :south
+        :west -> :north
+      end
 
     %Robot{robot | yaw: new_yaw}
   end
@@ -79,12 +81,13 @@ defmodule ToyRobot.Robot do
     %Robot{yaw: :south}
   """
   def turn_around(%Robot{yaw: yaw} = robot) do
-    new_yaw = case yaw do
-      :north -> :south
-      :south -> :north
-      :east -> :west
-      :west -> :east
-    end
+    new_yaw =
+      case yaw do
+        :north -> :south
+        :south -> :north
+        :east -> :west
+        :west -> :east
+      end
 
     %Robot{robot | yaw: new_yaw}
   end

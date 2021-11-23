@@ -6,7 +6,7 @@ defmodule ToyRobot.CommandInterpreterTest do
 
   test "handles all possible commands" do
     commands = ["PLACE 1,2,NORTH", "MOVE", "LEFT", "RIGHT", "UTURN", "REPORT"]
-    commands |> CommandInterpreter.interpret
+    commands |> CommandInterpreter.interpret()
   end
 
   # All commands must be in upcase, all lower and mixed case commands will be ignored
@@ -17,14 +17,15 @@ defmodule ToyRobot.CommandInterpreterTest do
 
   test "marks invalid commands as invalid" do
     commands = ["SPIN", "TWIRL", "EXTERMINATE", "PLACE 1, 2, NORTH", "move", "MoVe"]
-    output = commands |> CommandInterpreter.interpret
+    output = commands |> CommandInterpreter.interpret()
+
     assert output == [
-      {:invalid, "SPIN"},
-      {:invalid, "TWIRL"},
-      {:invalid, "EXTERMINATE"},
-      {:invalid, "PLACE 1, 2, NORTH"},
-      {:invalid, "move"},
-      {:invalid, "MoVe"},
-    ]
+             {:invalid, "SPIN"},
+             {:invalid, "TWIRL"},
+             {:invalid, "EXTERMINATE"},
+             {:invalid, "PLACE 1, 2, NORTH"},
+             {:invalid, "move"},
+             {:invalid, "MoVe"}
+           ]
   end
 end

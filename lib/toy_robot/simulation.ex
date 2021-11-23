@@ -81,10 +81,8 @@ defmodule ToyRobot.Simulation do
     {:error, :at_table_boundary}
   """
   def move(%{robot: robot, table: table} = simulation) do
-    with moved_robot <- robot |> Robot.move,
-      true <- table |> Table.valid_position?(moved_robot)
-
-    do
+    with moved_robot <- robot |> Robot.move(),
+         true <- table |> Table.valid_position?(moved_robot) do
       {:ok, %{simulation | robot: moved_robot}}
     else
       false -> {:error, :at_table_boundary}
@@ -110,7 +108,7 @@ defmodule ToyRobot.Simulation do
     }}
   """
   def turn_left(%Simulation{robot: robot} = simulation) do
-    {:ok, %{simulation | robot: robot |> Robot.turn_left}}
+    {:ok, %{simulation | robot: robot |> Robot.turn_left()}}
   end
 
   @doc """
@@ -132,7 +130,7 @@ defmodule ToyRobot.Simulation do
     }}
   """
   def turn_right(%Simulation{robot: robot} = simulation) do
-    {:ok, %{simulation | robot: robot |> Robot.turn_right}}
+    {:ok, %{simulation | robot: robot |> Robot.turn_right()}}
   end
 
   @doc """
@@ -154,7 +152,7 @@ defmodule ToyRobot.Simulation do
     }}
   """
   def turn_around(%Simulation{robot: robot} = simulation) do
-    {:ok, %{simulation | robot: robot |> Robot.turn_around}}
+    {:ok, %{simulation | robot: robot |> Robot.turn_around()}}
   end
 
   @doc """
@@ -173,4 +171,23 @@ defmodule ToyRobot.Simulation do
     %Robot{lcn_x: 0, lcn_y: 0, yaw: :north}
   """
   def report(%Simulation{robot: robot}), do: robot
+
+  @doc """
+  Shows where the robot would move next.
+
+  ## Examples
+      iex> alias ToyRobot.{Robot, Table, Simulation}
+      [ToyRobot.Robot, ToyRobot.Table, ToyRobot.Simulation]
+      iex> table = %Table{x_boundary: 5, y_boundary: 5}
+      %Table{x_boundary: 5, y_boundary: 5}
+      iex> simulation = %Simulation{
+      ...>  table: table,
+      ...>  robot: %Robot{lcn_x: 0, lcn_y: 0, yaw: :north}
+      ...> }
+      iex> simulation |> Simulation.next_position
+      %Robot{lcn_x: 0, lcn_y: 1, yaw: :north}
+  """
+  def next_position(%{robot: robot} = _simulation) do
+    robot |> Robot.move
+  end
 end

@@ -22,18 +22,22 @@ defmodule ToyRobot.CommandInterpreter do
     commands |> Enum.map(&do_interpret/1)
   end
 
-  defp do_interpret(("PLACE" <> _rest) = command) do
+  defp do_interpret("PLACE" <> _rest = command) do
     format = ~r/\APLACE (\d+),(\d+),(NORTH|SOUTH|EAST|WEST)\z/
+
     case Regex.run(format, command) do
       [_command, lcn_x, lcn_y, yaw] ->
         to_int = &String.to_integer/1
 
-        {:place, %{
-          lcn_x: to_int.(lcn_x),
-          lcn_y: to_int.(lcn_y),
-          yaw: yaw |> String.downcase |> String.to_atom
-        }}
-      nil -> {:invalid, command}
+        {:place,
+         %{
+           lcn_x: to_int.(lcn_x),
+           lcn_y: to_int.(lcn_y),
+           yaw: yaw |> String.downcase() |> String.to_atom()
+         }}
+
+      nil ->
+        {:invalid, command}
     end
   end
 
